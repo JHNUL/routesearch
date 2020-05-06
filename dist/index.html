@@ -15,10 +15,10 @@
     <label for="to">Mihin:</label>
     <select id="to"> </select>
     <button id="searchButton">Hae</button>
-    <div id='resultContainer'>
-      <p id='resultLabel'></p>
+    <div id="resultContainer">
+      <p id="resultLabel"></p>
     </div>
-    <div id='routeTableContainer'></div>
+    <div id="routeTableContainer"></div>
   </body>
   <script>
     window.onload = function () {
@@ -36,8 +36,12 @@
         errorContainer.style.color = 'red'
       }
 
-      /* luodaan taulukko ihmeteltäväksi */
+      /* luodaan taulukko ihmeteltäväksi, näytetään reitit molemmin päin */
       function createRouteTable(routes) {
+        const reverseRoutes = routes.map((r) => {
+          return { mista: r.mihin, mihin: r.mista, kesto: r.kesto }
+        })
+        routes = [...routes, ...reverseRoutes]
         routes.sort((r1, r2) => r1.mista.localeCompare(r2.mista))
         const table = document.createElement('table')
         const headerRow = document.createElement('tr')
