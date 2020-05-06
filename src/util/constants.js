@@ -19,28 +19,6 @@ const pysakkiHakemisto = {
   R: 18,
 }
 
-const pysakkiTaulukko = [
-  null,
-  'A',
-  'B',
-  'C',
-  'D',
-  'E',
-  'F',
-  'G',
-  'H',
-  'I',
-  'J',
-  'K',
-  'L',
-  'M',
-  'N',
-  'O',
-  'P',
-  'Q',
-  'R',
-]
-
 const linjastot = {
   "keltainen": ["E", "F", "G", "K", "L", "M", "N"],
   "punainen": ["C", "D", "R", "Q", "N", "O", "P"],
@@ -181,4 +159,4 @@ const tiet =  [
   }
 ]
 
-module.exports = { pysakkiHakemisto, pysakkiTaulukko, tiet, linjastot }
+module.exports = { pysakkiHakemisto, tiet, linjastot }

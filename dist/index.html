@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reittihaku</title>
+  </head>
+  <body>
+    <p>Reittihaku</p>
+    <div id="errorContainer" style="display: none;">
+      <p>Error loading data, please refresh page</p>
+    </div>
+    <label for="from">Mist&auml;:</label>
+    <select id="from"> </select>
+    <label for="to">Mihin:</label>
+    <select id="to"> </select>
+    <button id="searchButton">Hae</button>
+    <div id='resultContainer'>
+      <p id='resultLabel'></p>
+    </div>
+  </body>
+  <script>
+    window.onload = function () {
+      /* bind elements */
+      const selectFrom = document.getElementById('from')
+      const selectTo = document.getElementById('to')
+      const errorContainer = document.getElementById('errorContainer')
+      const searchButton = document.getElementById('searchButton')
+      const resultLabel = document.getElementById('resultLabel')
+
+      /* minimaalinen virheviesti */
+      function displayError() {
+        errorContainer.style.display = ''
+        errorContainer.style.color = 'red'
+      }
+
+      /* latailee pysäkit */
+      fetch('/api/stops')
+        .then((res) => res.json())
+        .then((jsonRes) => {
+          jsonRes.forEach((stop) => {
+            const optionFrom = document.createElement('option')
+            const optionTo = document.createElement('option')
+            optionFrom.setAttribute('value', stop)
+            optionTo.setAttribute('value', stop)
+            optionFrom.appendChild(document.createTextNode(stop))
+            optionTo.appendChild(document.createTextNode(stop))
+            selectFrom.appendChild(optionFrom)
+            selectTo.appendChild(optionTo)
+          })
+        })
+        .catch((err) => displayError())
+
+      /* käsittele tulos */
+      function parseResult(res) {
+        console.log('<< LOGGING from index.html: res >> ', res)
+        const displayString = `Lyhin etäisyys ${res.lyhinReitti}. Reitti: ${res.reitti.join(' -> ')}`
+        resultLabel.innerText = displayString
+      }
+
+      /* hae reitti */
+      searchButton.onclick = function () {
+        resultLabel.innerText = ''
+        const from = selectFrom[selectFrom.selectedIndex].value
+        const to = selectTo[selectTo.selectedIndex].value
+        fetch(`/api/search?from=${from}&to=${to}`)
+          .then((res) => res.json())
+          .then((jsonRes) => {
+            parseResult(jsonRes)
+          })
+          .catch((err) => displayError())
+      }
+    }
+  </script>
+</html>

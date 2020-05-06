@@ -1,5 +1,27 @@
+const express = require('express')
+const { pysakkiHakemisto, tiet } = require('./util/constants')
 const Reittihaku = require('./logic/Reittihaku')
 
-const reitti = new Reittihaku()
-const res = reitti.haeReitti('A', 'E')
-console.log('<< Line 5 at server.js >> ', res)
+const app = express()
+const PORT = 3000 // env
+
+app.get('/api/stops', (req, res) => {
+  res.status(200).json(Object.keys(pysakkiHakemisto))
+})
+
+app.get('/api/search', (req, res) => {
+  const { from, to } = req.query
+  try {
+    const reitti = new Reittihaku(tiet, pysakkiHakemisto)
+    const haku = reitti.haeReitti(from, to)
+    res.status(200).json(haku)
+  } catch (error) {
+    res.status(400).json(error.message)
+  }
+})
+
+app.use(express.static('dist'))
+
+app.listen(PORT, () => {
+  console.log(`App listening on port ${PORT}`)
+})
