@@ -53,7 +53,6 @@
 
       /* käsittele tulos */
       function parseResult(res) {
-        console.log('<< LOGGING from index.html: res >> ', res)
         const displayString = `Lyhin etäisyys ${res.lyhinReitti}. Reitti: ${res.reitti.join(' -> ')}`
         resultLabel.innerText = displayString
       }
