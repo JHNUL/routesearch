@@ -6,7 +6,10 @@ const app = express()
 const PORT = process.env.PORT || 3000
 
 app.get('/api/stops', (req, res) => {
-  res.status(200).json(Object.keys(pysakkiHakemisto))
+  res.status(200).json({
+    pysakit: Object.keys(pysakkiHakemisto),
+    tiet,
+  })
 })
 
 app.get('/api/search', (req, res) => {
