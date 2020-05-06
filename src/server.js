@@ -3,7 +3,7 @@ const { pysakkiHakemisto, tiet } = require('./util/constants')
 const Reittihaku = require('./logic/Reittihaku')
 
 const app = express()
-const PORT = 3000 // env
+const PORT = process.env.PORT || 3000
 
 app.get('/api/stops', (req, res) => {
   res.status(200).json(Object.keys(pysakkiHakemisto))
